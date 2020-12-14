@@ -599,9 +599,6 @@ public class DataDokter extends javax.swing.JFrame {
             }catch(SQLException e){
                 System.out.println("Koneksi gagal"+e.toString());
             }
-            // remove selected row from the model
-            
-            
         }
     }//GEN-LAST:event_editBtnActionPerformed
 

@@ -232,9 +232,15 @@ public class FormLogin extends javax.swing.JFrame {
                 String nama =rs.getString("username");
                 JOptionPane.showMessageDialog(this, "Selamat datang,"+nama+"","Welcome",JOptionPane.INFORMATION_MESSAGE);                
                 this.dispose();
-                MenuUtama menu= new MenuUtama();
-                menu.setLocationRelativeTo(null);
-                menu.setVisible(true);
+                if(rs.getString("hakAkses").equals("Staff")){
+                    MenuUtama menu= new MenuUtama();
+                    menu.setLocationRelativeTo(null);
+                    menu.setVisible(true);
+                }else{
+                    MenuAdmin menu= new MenuAdmin();
+                    menu.setLocationRelativeTo(null);
+                    menu.setVisible(true);
+                }
             }else{
                 JOptionPane.showMessageDialog(this, "User Tidak Ada","Informasi",JOptionPane.INFORMATION_MESSAGE);
                 usernameField.setText("");

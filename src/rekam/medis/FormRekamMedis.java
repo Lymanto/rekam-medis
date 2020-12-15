@@ -6,7 +6,6 @@
 package rekam.medis;
 import java.awt.Component;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -14,7 +13,6 @@ import java.sql.*;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.*;
@@ -37,6 +35,11 @@ public class FormRekamMedis extends javax.swing.JFrame {
     private JTable table;
     public FormRekamMedis() {
         initComponents();
+        setLocationRelativeTo(null);
+        jkLakiPasien.setActionCommand("Laki-laki");
+        jkPerempuanPasien.setActionCommand("Perempuan");
+        jkLakiPenanggung.setActionCommand("Laki-laki");
+        jkPerempuanPenanggung.setActionCommand("Perempuan");
         
     }
 
@@ -55,6 +58,26 @@ public class FormRekamMedis extends javax.swing.JFrame {
         }
     }
     
+    
+    void clear(){
+        noDataPasien.setText("");
+        tglMasuk.setCalendar(null);
+        tglKeluar.setCalendar(null);
+        diagnosaField.setText("");
+        ruanganKamar.setText("");
+        namaPasien.setText("");
+        pasienGroup.clearSelection();
+        tglLahir.setCalendar(null);
+        noHPPasien.setText("");
+        alamatPasien.setText("");
+        namaPenanggung.setText("");
+        penanggungGroup.clearSelection();
+        noHPPenanggung.setText("");
+        alamatPenanggung.setText("");
+        idDokter.setSelectedItem("");
+        namaDokter.setText("");
+    }
+    
     void aktif(){
         tglMasuk.setEnabled(true);
         tglKeluar.setEnabled(true);
@@ -71,6 +94,7 @@ public class FormRekamMedis extends javax.swing.JFrame {
         jkPerempuanPenanggung.setEnabled(true);
         noHPPenanggung.setEnabled(true);
         alamatPenanggung.setEnabled(true);
+        idDokter.setEnabled(true);
     }
     void nonaktif(){
         noDataPasien.setEnabled(false);
@@ -270,6 +294,11 @@ public class FormRekamMedis extends javax.swing.JFrame {
 
         saveBtn.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         saveBtn.setText("Save");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
 
         cancelBtn.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cancelBtn.setText("Cancel");
@@ -281,6 +310,11 @@ public class FormRekamMedis extends javax.swing.JFrame {
 
         exitBtn.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         exitBtn.setText("Exit");
+        exitBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitBtnActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -584,14 +618,13 @@ public class FormRekamMedis extends javax.swing.JFrame {
                     .addComponent(jLabel15)
                     .addComponent(jkLakiPenanggung)
                     .addComponent(jkPerempuanPenanggung))
+                .addGap(15, 15, 15)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
                         .addComponent(blabka5)
                         .addGap(15, 15, 15)
                         .addComponent(blabka3))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
                         .addComponent(noHPPenanggung, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -608,7 +641,7 @@ public class FormRekamMedis extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(391, 391, 391)
+                                .addContainerGap(391, Short.MAX_VALUE)
                                 .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(50, 50, 50)
                                 .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -679,12 +712,15 @@ public class FormRekamMedis extends javax.swing.JFrame {
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         // TODO add your handling code here:
+        clear();
+        nonaktif();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
         nonaktif();
         isiDokter();
+        clear();
         tampilGrid(getData());
     }//GEN-LAST:event_formWindowActivated
 
@@ -708,10 +744,10 @@ public class FormRekamMedis extends javax.swing.JFrame {
                     SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                     Date tglmasuk = formatter1.parse(rs.getString("tglMasuk"));
                     tglMasuk.setDate(tglmasuk);
-                    if(rs.getString("tglKeluar") != null){
-                        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    if(rs.getString("tglKeluar") != null ){
+                        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                         Date tglkeluar = formatter2.parse(rs.getString("tglKeluar"));
-                        tglMasuk.setDate(tglkeluar);
+                        tglKeluar.setDate(tglkeluar);
                     }
                     diagnosaField.setText(rs.getString("diagnosa"));
                     ruanganKamar.setText(rs.getString("ruanganKamar"));
@@ -739,7 +775,8 @@ public class FormRekamMedis extends javax.swing.JFrame {
                     noHPPenanggung.setText(rs.getString("noHPPenanggung"));
                     
                 }
-//                aktif();
+                aktif();
+                
 //                spesialis.setEnabled(false);
             }catch(SQLException e){
                 System.out.println("Koneksi gagal"+e.toString());
@@ -775,6 +812,33 @@ public class FormRekamMedis extends javax.swing.JFrame {
         // TODO add your handling code here:
         tampilGrid(getDataSearch());
     }//GEN-LAST:event_cariBtnActionPerformed
+
+    private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
+        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this,"Yakin mau keluar?","Confirm",JOptionPane.YES_NO_OPTION);
+        if(confirm == 0){
+            dispose();
+        }
+    }//GEN-LAST:event_exitBtnActionPerformed
+
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        // TODO add your handling code here:
+        try{
+            Connection conn = DriverManager.getConnection(url,user,password);
+            Statement st = (Statement) conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            SimpleDateFormat dateTime = new SimpleDateFormat("yyyyMMddHHmmss");
+            String sql1 = "UPDATE rekammedis SET idDokter='"+idDokter.getSelectedItem()+"',diagnosa='"+diagnosaField.getText()+"',tglKeluar='"+dateTime.format(tglKeluar.getDate())+"' WHERE noDataPasien='"+noDataPasien.getText()+"'";
+            st.executeUpdate(sql1);
+            String sql2 = "UPDATE datapasien SET tglMasuk='"+dateTime.format(tglMasuk.getDate())+"',ruanganKamar='"+ruanganKamar.getText()+"',namaPasien='"+namaPasien.getText()+"',jkPasien='"+pasienGroup.getSelection().getActionCommand()+"',TglLahirPasien='"+sdf.format(tglLahir.getDate())+"',noHPPasien='"+noHPPasien.getText()+"',alamatPasien='"+alamatPasien.getText()+"',namaPenanggung='"+namaPenanggung.getText()+"',noHPPenanggung='"+noHPPenanggung.getText()+"',jkPenanggung='"+penanggungGroup.getSelection().getActionCommand()+"',alamatPenanggung='"+alamatPenanggung.getText()+"' WHERE noDataPasien='"+noDataPasien.getText()+"'";
+            st.executeUpdate(sql2);
+            JOptionPane.showMessageDialog(this,"Data berhasil disimpan","info",JOptionPane.INFORMATION_MESSAGE);
+            
+        }catch(SQLException e){
+          System.out.println("Koneksi gagal"+e.toString());
+        }
+        formWindowActivated(null);
+    }//GEN-LAST:event_saveBtnActionPerformed
 
     /**
      * @param args the command line arguments

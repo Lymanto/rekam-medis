@@ -118,6 +118,8 @@ public class DataDokter extends javax.swing.JFrame {
                 data[no][5] = rs.getString("alamat");
                 data[no][6] = rs.getString("email");
             }
+            String nos = String.valueOf(no+1);
+            jlhDokter.setText(nos);
         }catch(SQLException e){
             System.out.println("Koneksi gagal"+e.toString());
         }
@@ -206,7 +208,7 @@ public class DataDokter extends javax.swing.JFrame {
         cancelBtn = new javax.swing.JButton();
         saveBtn = new javax.swing.JButton();
         exit = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
+        jlhDokter = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cariBtn = new javax.swing.JButton();
@@ -318,8 +320,8 @@ public class DataDokter extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel12.setText("12345");
+        jlhDokter.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jlhDokter.setText("12345");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 204));
         jPanel1.setForeground(new java.awt.Color(255, 255, 204));
@@ -411,7 +413,7 @@ public class DataDokter extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel11)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel12)
+                                .addComponent(jlhDokter)
                                 .addGap(62, 62, 62))
                             .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(89, 89, 89))
@@ -494,7 +496,7 @@ public class DataDokter extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(jLabel12))
+                            .addComponent(jlhDokter))
                         .addGap(15, 15, 15)
                         .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 28, Short.MAX_VALUE))
@@ -677,7 +679,6 @@ public class DataDokter extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -693,6 +694,7 @@ public class DataDokter extends javax.swing.JFrame {
     private javax.swing.ButtonGroup jenisKelamin;
     private javax.swing.JRadioButton jkLaki;
     private javax.swing.JRadioButton jkPerempuan;
+    private javax.swing.JLabel jlhDokter;
     private javax.swing.JTextField namaDokter;
     private javax.swing.JTextField noTelp;
     private javax.swing.JButton saveBtn;

@@ -242,7 +242,7 @@ public class FormLogin extends javax.swing.JFrame {
                     menu.setVisible(true);
                 }
             }else{
-                JOptionPane.showMessageDialog(this, "User Tidak Ada","Informasi",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "User tidak terdaftar atau password salah","Informasi",JOptionPane.INFORMATION_MESSAGE);
                 usernameField.setText("");
                 passwordField.setText("");
                 usernameField.grabFocus();
